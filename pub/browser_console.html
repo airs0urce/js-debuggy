@@ -1,0 +1,191 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>Console</title>
+    <meta charset="UTF-8" /> 
+    <script src="/pub/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="/pub/js/jquery.hotkeys.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/pub/css/bootstrap.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/pub/css/main.css" type="text/css" media="all" />
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h3>Console</h3>
+    <ul id="console">
+        <li class="command_line">
+            <span id="command_line_pointer"></span>
+            <span id="command_line_caret"></span>
+            <input id="js_code" type="text" value="" spellcheck="false" />
+        </li>
+    </ul>
+        
+    <script type="text/javascript">
+    
+    var escapeHtml = function(unsafe) {
+      return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+    }
+    
+    var JsConsole = function() {
+        var that = this;
+        
+        this.socket = io.connect('http://<%- hostname %>:<%- port %>/browser_console');
+        
+        this.commandsHistory = [];
+        this.commandsHistoryIndex = 0;
+        
+        this.body = $('body'),
+        this.console = $('ul#console'),
+        this.commandLine = this.console.find('li.command_line');
+        this.e = null;
+        this.caret = $('#command_line_caret');
+        this.codeInput = $('#js_code');
+        this.pointer = $('#command_line_pointer');
+        
+        // get letter width (different for different browsers)
+        var letter = $('<span id="letter">a</span>').appendTo('body');
+        var letterWidth = letter.width();
+        letter.remove();
+        
+        // hide scrollbars
+        document.documentElement.style.overflow = 'hidden';	 // firefox, chrome
+        document.body.scroll = "no";	// ie only
+
+        // resize console on window resize
+        var resizeConsole = function() {
+            that.console.height($(window).height() - (that.body.height() - that.console.height() + 5));
+            that.scrollToBottom();
+        }
+        $(window).resize(resizeConsole);
+        resizeConsole();        
+        
+        this.codeInput.val('');
+
+        if ($.browser.webkit) {
+            this.caret.height(18);
+        } else if ($.browser.mozilla) {
+            this.caret.height(13);
+        }
+
+        setInterval(function() {
+            that.caret.toggleClass('hidden');
+        }, 500);
+
+        this.codeInput.focus(function() {
+            that.caret.addClass('force_hidden');
+        }).blur(function() {
+            that.caret.removeClass('force_hidden');
+        });
+
+        this.codeInput.change(function() {
+            that.caret.css('left', that.codeInput.val().length * letterWidth);
+        });
+
+        this.codeInput.blur(function() {
+            that.pointer.addClass('disabled');
+        }).focus(function() {
+            that.pointer.removeClass('disabled');
+        });
+
+        $('html').keydown(function(event) {
+            
+            if (event.which == 38) { // up
+                that.historyUp();
+            } else if (event.which == 40) { // down
+                that.historyDown();
+            }
+            
+            // ctrl + l
+            if (event.which == 76 && event.ctrlKey) {
+                that.clear();
+            }
+            // cmd + k
+            if (event.which == 75 && event.metaKey) {
+                that.clear();
+            }
+            
+            // if we enter not special key, then let's focus input
+            if (! event.metaKey && ! event.altKey && ! event.ctrlKey) {
+                that.codeInput.focus();
+            }
+            
+            // enter
+            if (event.which == 13) {
+                var jsCode = that.codeInput.val();
+                that.executeJsOnClient(jsCode);
+                that.codeInput.val('');
+            }
+        });
+        
+        this.socket.on('write', function(data) {
+            that.writeLine(data.data);
+        });
+    };
+    JsConsole.prototype.scrollToBottom = function() {
+        this.console.scrollTop(this.console[0].scrollHeight);
+    };
+    JsConsole.prototype.writeLine = function(string, type) {
+        var doScroll = (this.console[0].scrollTop == this.console[0].scrollHeight - this.console[0].offsetHeight);
+        
+        var lastLine = this.commandLine.prev();
+        if (lastLine.find('span.m').html() == string) {            
+            var label = lastLine.find('span.label');
+            if (! label.length) {
+                var label = $('<span class="label warning">1</span>');
+                lastLine.append(label);
+            }
+            label.text(parseInt(label.text(), 10) + 1);
+        } else {
+            $('<li class="' + type + '"><span class="m">' + escapeHtml(string) + '</span></li>').insertBefore(this.commandLine);
+        }
+        
+        if (doScroll) {
+            this.scrollToBottom();
+        }
+    };
+    JsConsole.prototype.executeJsOnClient = function(command) {
+        that = this;
+        if (! command) return;
+        this.writeLine('>> ' + command, 'user_input');
+        this.socket.emit('execute_js', {command: command});
+        this.socket.once('execute_js_result', function(data) {
+            that.writeLine(data.result, data.type);
+        });
+        
+        this.commandsHistory.push(command);
+        this.commandsHistoryIndex = this.commandsHistory.length;
+    };
+    JsConsole.prototype.clear = function() {
+        this.console.find('li').not('.command_line').remove();
+    };
+    JsConsole.prototype.historyAdd = function(command) {
+        this.commandHistory.push(command);
+    };
+    JsConsole.prototype.historyUp = function() {
+        if (0 !== this.commandsHistoryIndex) {
+           this.commandsHistoryIndex--;
+        }
+        var command = this.commandsHistory[this.commandsHistoryIndex];
+        this.codeInput.val(command);
+        return;
+    };
+    JsConsole.prototype.historyDown = function() {
+        if (this.commandsHistory.length !== this.commandsHistoryIndex) {
+           this.commandsHistoryIndex++;
+        }
+        var command = this.commandsHistory[this.commandsHistoryIndex];
+        this.codeInput.val(command);
+        return;
+    };
+    
+    var jsconsole = new JsConsole();
+    
+    </script>
+    
+</body>
+</html>
+

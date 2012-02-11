@@ -1,0 +1,96 @@
+body {
+    
+    overflow: hidden;
+}
+h3 {
+    padding-left: 10px;
+    background-color: #e6e6e6;
+    border-bottom: 1px solid #a3a3a3;
+    border-top: 1px solid #b4b4b4;
+    white-space: nowrap;
+}
+
+ul#console {
+    overflow-y: scroll;
+    margin: 0;
+    font-size: 11px;
+    margin: 0 0 2px 10px;
+}
+    ul#console li {
+        border-bottom: 1px solid #f0f0f0;
+        color: #000;
+    }
+        ul#console li.error {
+            color: red;
+        }
+        ul#console li.user_input {
+            color: #0080ff;
+            border-bottom: none;
+        }
+        
+        ul#console li:hover {
+            background-color: #fbfbfb;
+        }
+        
+        ul#console li.command_line {
+            border-bottom: none;
+        }
+            ul#console li.command_line:hover {
+                background-color: #fff;
+            }
+
+            ul#console li.command_line input {
+                position: relative;
+                left: -9px;
+                height: 19px !important;
+                width: 94%;
+                border: none;
+                padding: 0;
+                border: none;
+                color: #000;
+                font-size: 12px;
+            
+                -webkit-box-shadow:none;
+                -moz-box-shadow:none;
+                box-shadow:none;
+            }
+        
+            ul#console li.command_line #command_line_pointer {
+                margin-top: 7px;
+                width: 5px;
+                height: 8px;
+                display: inline-block;
+                background: url(../img/pointer.png) no-repeat;
+            }
+                ul#console li.command_line #command_line_pointer.disabled {
+                    background: url(../img/pointer.png) no-repeat -5px;
+                }
+        
+            ul#console li.command_line #command_line_caret {
+                position: relative;
+                top: -1px;
+                z-index: 10;
+                display: inline-block; 
+                width: 1px;
+                background-color: #000; 
+                height: 18px; /* we change height in javascript depends on which browser it is */
+                vertical-align: middle;
+            }
+        
+            ul#console li.command_line > * {
+                vertical-align: top;
+            }
+ul#console, ul#console li.command_line input {
+    font-family: 'Lucida Console', 'Courier New';
+    
+}
+.hidden {
+    visibility: hidden;
+}
+.force_hidden {
+    visibility: hidden !important;
+}
+
+input[readonly] {
+    cursor: auto !important;
+}
