@@ -1,8 +1,8 @@
 //
 //  socket.io connection
 //
-<%- socketio %>
-var socket = io.connect('http://192.168.1.102:<%- port %>/remote_client');
+<%- socketioContent %>
+var socket = io.connect('http://<%- host %>/client');
 socket.on('execute_js', function(data) {
     try {
         var result = eval(data.command);
@@ -27,6 +27,7 @@ var defineInterval = setInterval(function() {
        clearInterval(defineInterval);
    }
 }, 100);
+
 function defineConsole() {
     // define our own console
     console = {

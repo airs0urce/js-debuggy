@@ -1,12 +1,15 @@
 {
-    "name": "js-remote-repl", 
+    "name": "js-debuggy", 
     "description": "Remote interactive javascript debug console based on node.js and socket.io.",
-    "version": "0.1.0", 
-    "keywords": ["remote", "debug", "console", "repl", "phonegap"],
+    "version": "0.1.2", 
+    "keywords": ["debuggy", "debug", "console", "repl", "phonegap", "remote"],
     "author": "Dmitriy Eroshenko <airs0urce0@gmail.com>",
     "main": "app",
+    "bin": {
+        "js-debuggy": "./bin/js-debuggy"
+    },
     "dependencies": {
-        "socket.io": "0.8.7",
+        "socket.io": "0.9.2",
         "ejs": "0.6.1",
         "request": "2.9.100",
         "cli-color": "0.1.6"

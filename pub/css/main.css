@@ -1,24 +1,33 @@
-body {
-    
+html, body {
+    padding: 0;    
+    margin: 0;
     overflow: hidden;
 }
 h3 {
+    margin: 0;
     padding-left: 10px;
     background-color: #e6e6e6;
     border-bottom: 1px solid #a3a3a3;
     border-top: 1px solid #b4b4b4;
     white-space: nowrap;
+    font-size: 18px;
+    line-height: 36px;
+    color: #404040;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 ul#console {
     overflow-y: scroll;
     margin: 0;
-    font-size: 11px;
+    padding: 0;
+    font-size: 12px;
     margin: 0 0 2px 10px;
+    list-style: disc;
 }
     ul#console li {
         border-bottom: 1px solid #f0f0f0;
         color: #000;
+        line-height: 18px;
     }
         ul#console li.error {
             color: red;
@@ -42,14 +51,13 @@ ul#console {
             ul#console li.command_line input {
                 position: relative;
                 left: -9px;
-                height: 19px !important;
+                font-size: 12px;
+                line-height: 18px;
                 width: 94%;
                 border: none;
                 padding: 0;
                 border: none;
                 color: #000;
-                font-size: 12px;
-            
                 -webkit-box-shadow:none;
                 -moz-box-shadow:none;
                 box-shadow:none;
@@ -68,7 +76,7 @@ ul#console {
         
             ul#console li.command_line #command_line_caret {
                 position: relative;
-                top: -1px;
+                top: 2px;
                 z-index: 10;
                 display: inline-block; 
                 width: 1px;
@@ -91,6 +99,22 @@ ul#console, ul#console li.command_line input {
     visibility: hidden !important;
 }
 
-input[readonly] {
-    cursor: auto !important;
+input:focus, textarea:focus {
+    outline: 0;
+    border-color: rgba(82, 168, 236, 0.8);
+}
+
+.label {
+    background-color: #F89406;
+    padding: 1px 4px 2px;
+    font-weight: bold;
+    white-space: nowrap;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    color: #fff;
+    margin-left: 3px;
+    font-size: 0.9em;
 }
