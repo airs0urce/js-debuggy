@@ -4,7 +4,7 @@ JS Debuggy
 With JS Debuggy you can call *console.log()* and use interactive JavaScript console while debugging 
 your application on device which doesn't provide JS console.
 
-This project created it to make it easy to debug iPhone and Android applications based on PhoneGAP ([http://phonegap.com/]()).
+This project created to make it easy to debug iPhone and Android applications based on PhoneGAP ([http://phonegap.com/]()).
 
 How to install
 --------------
@@ -13,7 +13,7 @@ How to install
 
 2) Install js-debuggy:
 
-    $ npm install js-debuggy
+    $ npm install js-debuggy -g
 
 How to use
 ----------

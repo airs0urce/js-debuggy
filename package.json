@@ -1,10 +1,13 @@
 {
     "name": "js-debuggy", 
+    "preferGlobal": "true",
     "description": "Remote interactive javascript debug console based on node.js and socket.io.",
     "version": "0.1.2", 
     "keywords": ["debuggy", "debug", "console", "repl", "phonegap", "remote"],
-    "author": "Dmitriy Eroshenko <airs0urce0@gmail.com>",
-    "main": "app",
+    "author": {
+        "name": "Dmitriy Eroshenko",
+        "email": "airs0urce0@gmail.com"
+    },
     "bin": {
         "js-debuggy": "./bin/js-debuggy"
     },
@@ -14,5 +17,11 @@
         "request": "2.9.100",
         "cli-color": "0.1.6"
     },
-    "engines": {"node": ">= 0.6.10"}
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/airs0urce/js-debuggy.git"
+    },
+    "engines": {
+        "node": ">= 0.6.10"
+    }
 }
