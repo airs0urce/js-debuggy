@@ -12,7 +12,7 @@
         "js-debuggy": "./bin/js-debuggy"
     },
     "dependencies": {
-        "socket.io": "0.9.2",
+        "socket.io": "0.8.7",
         "ejs": "0.6.1",
         "request": "2.9.100",
         "cli-color": "0.1.6"
