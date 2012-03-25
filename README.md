@@ -21,6 +21,6 @@ Run:
     
 	$ js-debuggy
 
-
-    
+and you'll see instructions.  
+Also you can see this screencast: [http://screencast.com/t/9LDksGE7q]()
 
