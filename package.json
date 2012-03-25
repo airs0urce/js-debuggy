@@ -2,7 +2,7 @@
     "name": "js-debuggy", 
     "preferGlobal": "true",
     "description": "Remote interactive javascript debug console based on node.js and socket.io.",
-    "version": "0.1.3", 
+    "version": "1.0.3", 
     "keywords": ["debuggy", "debug", "console", "repl", "phonegap", "remote"],
     "author": {
         "name": "Dmitriy Eroshenko",
